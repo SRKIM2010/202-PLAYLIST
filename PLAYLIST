@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2학년 2반 플레이리스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 90%;
+            height: 90%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .playlist {
+            background-color: #f9f9f9;
+            padding: 20px;
+            overflow-y: auto;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .playlist h2 {
+            text-align: center;
+        }
+
+        .form {
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="playlist">
+        <h2>신청된 플레이리스트</h2>
+        <ul id="playlist"></ul>
+    </div>
+
+    <div class="form">
+        <h2>노래 신청하기</h2>
+        <label for="student">이름</label>
+        <select id="student">
+            <option value="">이름을 선택하세요</option>
+            <option value="권태경">권태경</option>
+            <option value="김나은">김나은</option>
+            <option value="김승현">김승현</option>
+            <option value="김시량">김시량</option>
+            <option value="김아현">김아현</option>
+            <option value="김예지">김예지</option>
+            <option value="김이현">김이현</option>
+            <option value="김준석">김준석</option>
+            <option value="김하윤">김하윤</option>
+            <option value="박윤후">박윤후</option>
+            <option value="박태준">박태준</option>
+            <option value="신조엘">신조엘</option>
+            <option value="심민석">심민석</option>
+            <option value="유현아">유현아</option>
+            <option value="윤다영">윤다영</option>
+            <option value="이지안">이지안</option>
+            <option value="이하연">이하연</option>
+            <option value="장민지">장민지</option>
+            <option value="전소율">전소율</option>
+            <option value="정서인">정서인</option>
+            <option value="정우진">정우진</option>
+            <option value="정준호">정준호</option>
+            <option value="최지욱">최지욱</option>
+            <option value="최현준">최현준</option>
+            <option value="하희수">하희수</option>
+            <option value="홍지호">홍지호</option>
+            <option value="김민종">김민종</option>
+            <option value="이채원">이채원</option>
+        </select>
+
+        <label for="artist">가수</label>
+        <input type="text" id="artist" placeholder="가수 이름을 입력하세요">
+
+        <label for="song">노래 제목</label>
+        <input type="text" id="song" placeholder="노래 제목을 입력하세요">
+
+        <button onclick="registerSong()">등록</button>
+    </div>
+</div>
+
+<script>
+    const studentSongs = {}; // 학생별 신청곡 저장
+
+    function registerSong() {
+        const student = document.getElementById('student').value;
+        const artist = document.getElementById('artist').value;
+        const song = document.getElementById('song').value;
+
+        // 입력 값이 모두 있는지 확인
+        if (!student || !artist || !song) {
+            alert("모든 항목을 입력하세요.");
+            return;
+        }
+
+        // 학생이 이미 2곡을 신청했는지 확인
+        if (studentSongs[student] && studentSongs[student].length >= 2) {
+            alert("한 명당 2곡까지만 신청 가능합니다.");
+            return;
+        }
+
+        // 학생의 신청 목록에 곡 추가
+        if (!studentSongs[student]) {
+            studentSongs[student] = [];
+        }
+        studentSongs[student].push({ artist, song });
+
+        // 플레이리스트 업데이트
+        updatePlaylist();
+
+        // 입력 필드 초기화
+        document.getElementById('artist').value = '';
+        document.getElementById('song').value = '';
+    }
+
+    function updatePlaylist() {
+        const playlist = document.getElementById('playlist');
+        playlist.innerHTML = ''; // 기존 목록 지우기
+
+        for (const student in studentSongs) {
+            studentSongs[student].forEach(({ artist, song }) => {
+                const li = document.createElement('li');
+                li.textContent = `${student} - ${artist}: ${song}`;
+                playlist.appendChild(li);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
